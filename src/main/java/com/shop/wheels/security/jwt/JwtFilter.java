@@ -33,7 +33,6 @@ public class JwtFilter extends GenericFilterBean {
 
     /**
      * Конструктор JWT
-     *
      * @param jwtProvider - компонент для генерации и проверки JWT
      * @param customUserDetailsService - сервис для получения учетных данных пользователя
      */
@@ -62,7 +61,6 @@ public class JwtFilter extends GenericFilterBean {
 
     /**
      * Получение токена из хедера Authorization
-     *
      * @param request - запрос
      * @return - возвращает найденный токен
      */
@@ -81,4 +79,5 @@ public class JwtFilter extends GenericFilterBean {
         GrantedAuthority[] grantedAuthorities = new GrantedAuthority[1];
         return realRoles.toArray(grantedAuthorities)[0].getAuthority().equals("ROLE_" + role.name());
     }
+
 }

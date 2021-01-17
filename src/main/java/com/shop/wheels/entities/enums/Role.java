@@ -5,7 +5,7 @@ package com.shop.wheels.entities.enums;
  */
 public enum Role implements LocalizedEnum {
 
-    USER("Неаккредитованный поставщик"), ADMIN("Администратор"), PRODUCER("Поставщик"), BAD("Добавленный в ЧС");
+    USER("Пользователь"), MANAGER("Менеджер"), MODERATOR("Модератор"), ADMIN("Администратор");
 
     private final String text;
 

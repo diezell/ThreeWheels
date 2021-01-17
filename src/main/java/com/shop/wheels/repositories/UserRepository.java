@@ -19,6 +19,13 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findByLogin(String login);
 
     /**
+     * Поиск Пользователя по его личному номеру
+     *
+     * @param confirmCode - личный номер пользователя
+     */
+    Optional<UserEntity> findByConfirmCode(UUID confirmCode);
+
+    /**
      * Поиск пользователя по роли
      * @param role - роль пользователя
      */

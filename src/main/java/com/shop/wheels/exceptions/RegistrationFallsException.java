@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * Исключение, когда код подтверждения регистрации не прошёл проверку
  */
-@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
 public class RegistrationFallsException extends ApplicationException {
 
 }

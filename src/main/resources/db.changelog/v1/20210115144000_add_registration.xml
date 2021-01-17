@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!-- Создание таблицы пользователей -->
+    <changeSet author="maxim" id="20210115144000_1">
+        <createTable tableName="user_table">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirm_code" type="UUID"/>
+            <!--            <column name="confirm" type="boolean" defaultValueBoolean="false"/>-->
+        </createTable>
+    </changeSet>
+
+    <changeSet author="maxim" id="20210115144000_2">
+        <createTable tableName="refresh_session">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refresh_token" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fingerprint" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="exp_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="refresh_session" baseColumnNames="user_id" constraintName="refresh_user_fk" referencedTableName="user_table"
+                                 referencedColumnNames="id" onUpdate="CASCADE" onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- Добавление администратора в таблицу пользователей. Логин: admin, пароль: admin -->
+    <changeSet author="maxim" id="20210115144000_3">
+        <insert tableName="user_table">
+            <column name="id" value="37ea297c-15f9-4562-b181-9aedc27fc724"/>
+            <column name="login" value="admin"/>
+            <column name="password" value="$2a$10$Im8txq7M7lixfrXj3qo46eTg4ltLFWR3nqB30ekepRjemmfiuw3bi"/>
+            <column name="first_name" value="administrator"/>
+            <column name="last_name" value=""/>
+            <column name="role" value="ADMIN"/>
+<!--            <column name="confirm_code" value=""/>-->
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

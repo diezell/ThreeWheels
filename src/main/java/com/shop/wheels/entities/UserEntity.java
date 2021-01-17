@@ -17,15 +17,24 @@ public class UserEntity {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "email")
+    @Column(name = "login")
     private String login;
 
     @Column(name = "password")
     private String password;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "confirm_code")
+    private UUID confirmCode;
 
     @OneToMany(mappedBy = "user")
     private List<RefreshTokenEntity> refreshTokens;

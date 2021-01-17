@@ -22,8 +22,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+
+//    compile 'org.springframework.boot:spring-boot-starter-webflux'
+//    compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+//
+//    compile group: 'com.ibm.icu', name: 'icu4j', version: '68.1' //???
+
+    implementation 'org.liquibase:liquibase-core'
+    compile 'org.modelmapper:modelmapper:2.3.3'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'

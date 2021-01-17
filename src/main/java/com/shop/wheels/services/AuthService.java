@@ -3,16 +3,15 @@ package com.shop.wheels.services;
 import com.shop.wheels.dto.requests.*;
 import com.shop.wheels.dto.responses.AuthResponse;
 import com.shop.wheels.entities.*;
-import com.shop.wheels.entities.enums.Role;
 import com.shop.wheels.exceptions.*;
-import com.shop.wheels.security.jwt.JwtProvider;
 import com.shop.wheels.repositories.*;
+import com.shop.wheels.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.time.temporal.*;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 /**
@@ -25,8 +24,6 @@ public class AuthService {
     private final UserRepository userRepository;
 
     private final RefreshTokenRepository refreshTokenRepository;
-
-    //private final ProducerRepository producerRepository;
 
     private JwtProvider jwtProvider;
 
@@ -41,7 +38,6 @@ public class AuthService {
     public AuthService(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
-       // this.producerRepository = producerRepository;
     }
 
     /**
@@ -54,15 +50,9 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new AuthWrongException();
         }
-        if (user.getRole() == Role.BAD) {
-            throw new AuthWrongException();
+        if (user.getConfirmCode() != null) {
+            throw new NonConfirmRegistrationException();
         }
-//        if (producerRepository.existsByUserId(user.getId())) {
-//            ProducerEntity producer = producerRepository.findByUserId(user.getId()).orElseThrow(RegistrationFallsException::new);
-//            if (!producer.isConfirm()) {
-//                throw new NonConfirmRegistrationException();
-//            }
-//        }
         return generateTokens(user, request.getFingerprint());
     }
 
@@ -75,10 +65,6 @@ public class AuthService {
         try {
             UUID refreshToken = UUID.fromString(refreshRequest.getRefreshToken());
             RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(AuthWrongException::new);
-
-            if (refreshTokenEntity.getUser().getRole() == Role.BAD) {
-                throw new AuthWrongException();
-            }
 
             if (!refreshTokenEntity.getFingerprint().equals(refreshRequest.getFingerprint())) {
                 throw new AuthWrongException();
@@ -133,7 +119,6 @@ public class AuthService {
 
     /**
      * Срок жизни рефреш-токена
-     *
      * @param refreshTimeMillis в миллисекундах
      */
     @Value("${refresh.token.time}")
